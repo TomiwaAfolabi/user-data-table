@@ -31,6 +31,9 @@
     font-size: 15px;
     font-weight: 400;
     color: #6e6893;
+    @media screen and (max-width: 650px) {
+      font-size: 12px;
+    }
   }
 
   input:focus {

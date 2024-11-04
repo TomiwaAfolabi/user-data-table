@@ -16,11 +16,11 @@ defineProps(['extraClass', 'buttonTitle'])
     border-radius: 6px;
     color: white;
     border: none;
-    @media screen and (max-width: 1130px) {
+    @media screen and (max-width: 650px) {
       max-width: 100px;
-      font-size: 10px;
-      text-wrap: nowrap;
-      min-height: 30px;
+      font-size: 12px;
+      min-height: auto;
+      height: 40px;
     }
   }
 }

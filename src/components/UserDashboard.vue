@@ -5,8 +5,14 @@
         <h4>TABLE HEADING</h4>
         <div class="header-tab">
           <div class="tab-buttons">
-            <div v-for="(tab, i) in tabViews" :key="i" class="t-button">
-              <p>{{ tab }}</p>
+            <div
+              v-for="(tab, i) in tabViews"
+              :key="i"
+              class="t-button"
+              :style="`${tab?.state ? 'border-bottom: solid #25213b;' : ''}`"
+              @click="filterUser(tab)"
+            >
+              <p>{{ tab.type }}</p>
             </div>
           </div>
           <div class="tab-info">
@@ -18,44 +24,72 @@
         </div>
       </div>
 
-      <div class="data-table-filter">
-        <FilterButton />
+      <div class="data-div-filter">
+        <div class="filterbutton">
+          <FilterButton @sortedtype="data => sortUser(data)" />
+        </div>
+
         <SearchBar />
-        <div class="button">
+        <div class="paybutton">
           <PayButton
             button-title="PAY DUES"
-            extra-class=" margin-top: 5px; display:flex; justify-content:end"
+            exdiva-class=" margin-top: 5px; display:flex; justify-content:end"
           />
         </div>
       </div>
+      <!-- User Table  -->
+      <div class="table-container">
+        <div class="table-header">
+          <div id="cbox"><input type="checkbox" /></div>
+          <div id="name"><p>NAME</p></div>
+          <div id="ustatus"><p>USER STATUS</p></div>
+          <div id="pstatus"><p>PAYMENT STATUS</p></div>
+          <div id="amt"><p>AMOUNT</p></div>
 
-      <table class="data-table">
-        <tbody class="data-table-body">
-          <tr class="table-header">
-            <th><input type="checkbox" /></th>
-            <th>NAME</th>
-            <th>USER STATUS</th>
-            <th>PAYMENT STATUS</th>
-            <th id="amt">AMOUNT</th>
-            <th id="v-more">
-              <img
-                src="../assets/icons/view-more-icon.png"
-                alt="viewmore icon"
-              />
-            </th>
-          </tr>
-          <tr class="table-body" v-for="user in userData" :key="user?.id">
-            <td class="cbox">
-              <input type="checkbox" />
-            </td>
-            <td class="uName">
+          <div id="v-more">
+            <img src="../assets/icons/view-more-icon.png" alt="viewmore icon" />
+          </div>
+        </div>
+        <div
+          class="body-container"
+          v-for="user in filteredUserData"
+          :key="user?.uId"
+        >
+          <!-- User Table -->
+          <div class="table-body">
+            <div class="checkbox">
+              <div id="cbox">
+                <input type="checkbox" />
+              </div>
+              <div
+                id="icon"
+                @click="
+                  toogleShowTable(),
+                    getUserDetails({ uId: user?.uId, state: showTable })
+                "
+              >
+                <img
+                  src="../assets/icons/arrow-down-icon.png"
+                  alt="drop down icon"
+                />
+              </div>
+            </div>
+            <div class="uName">
               <p id="name">{{ user?.name }}</p>
               <p id="email">{{ user?.email }}</p>
-            </td>
-            <td class="ustatus">
-              <div class="status">
-                <div class="dot" />
-                <p>
+            </div>
+            <div class="ustatus">
+              <div
+                class="status"
+                :style="`${user?.userStatus == 'Active' ? 'background-color: #E6E6F2;  max-width: 58px;' : ''} ${user?.userStatus == 'Inactive' ? ' background-color: #F2F0F9; max-width:75px;' : ''}`"
+              >
+                <div
+                  class="dot"
+                  :style="`${user?.userStatus === 'Active' ? 'background-color: #4A4AFF;' : ''} ${user?.userStatus === 'Inactive' ? 'background-color: #6E6893;' : ''}`"
+                />
+                <p
+                  :style="`${user?.userStatus === 'Active' ? ' color: #4A4AFF;' : ''} ${user?.userStatus === 'Inactive' ? ' color: #6E6893;' : ''}`"
+                >
                   {{ user?.userStatus }}
                 </p>
               </div>
@@ -63,24 +97,35 @@
               <p id="llogin">
                 Last login: <span>{{ user?.lastLogin }}</span>
               </p>
-            </td>
-            <td class="pstatus">
-              <div class="status">
-                <div class="dot" />
-                <p>
+            </div>
+            <div class="pstatus">
+              <div
+                class="status"
+                :style="`${user?.paymetStatus === 'Overdue' ? 'background-color: #FFE0E0; max-width:80px; ' : ''} ${user?.paymetStatus === 'Paid' ? 'background-color: #CDFFCD;' : ''} ${user?.paymetStatus === 'Unpaid' ? 'background-color: #FFECCC; max-width: 70px;' : ''}`"
+              >
+                <div
+                  class="dot"
+                  :style="`${user?.paymetStatus === 'Overdue' ? ' background-color:#D30000;' : ''} ${user?.paymetStatus === 'Paid' ? 'background-color: #007F00;' : ''} ${user?.paymetStatus === 'Unpaid' ? ' background-color:#965E00;  max-width: 10px;' : ''}`"
+                />
+                <p
+                  :style="`${user?.paymetStatus === 'Overdue' ? 'color:#D30000;' : ''} ${user?.paymetStatus === 'Paid' ? 'color: #007F00;' : ''} ${user?.paymetStatus === 'Unpaid' ? 'color:#965E00;' : ''}`"
+                >
                   {{ user?.paymetStatus }}
                 </p>
               </div>
               <p id="pdate">
-                {{ user?.paymetStatus == 'Paid' ? 'Paid' : 'N/A' }} on:
+                {{
+                  `${user?.paymetStatus == 'Paid' ? 'Paid' : ''} ${user?.paymetStatus === 'Unpaid' ? 'Dues' : ''} ${user?.paymetStatus === 'Overdue' ? 'Dued' : ''} on:`
+                }}
                 <span>{{ user?.payDate }}</span>
               </p>
-            </td>
-            <td class="amount">
+            </div>
+            <div class="amount">
               <p>${{ user?.amount }}</p>
-              <p>{{ user?.currency }}</p>
-            </td>
-            <td class="v-more-data">
+              <p id="cur">{{ user?.currency }}</p>
+            </div>
+
+            <div class="v-more-data">
               <div id="vm"><p>View More</p></div>
               <div id="icon">
                 <img
@@ -88,10 +133,53 @@
                   alt="viewmore icon"
                 />
               </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </div>
+          <!-- User Detail Table -->
+          <div class="detail-table-container" v-if="showTable">
+            <div class="detail-table-header">
+              <div class="c-box"></div>
+              <div id="udate"><p>DATE</p></div>
+              <div id="uactivity"><p>USER ACTIVITY</p></div>
+              <div id="udetail">
+                <p>DETAIL</p>
+                <img src="../assets/icons/detail-icon.png" alt="detail icon" />
+              </div>
+            </div>
+            <div
+              v-for="userdetails in userDetails"
+              :key="userdetails?.id"
+              class="detail-table-body"
+            >
+              <div
+                class="detail-body"
+                :key="userdetails?.id"
+                :style="`${!userdetails?.state ? 'show' : 'hidden'}`"
+              >
+                <div></div>
+                <div class="udate">
+                  <p id="name">{{ userdetails?.date }}</p>
+                </div>
+                <div class="uactivity">
+                  <p id="name">{{ userdetails?.userActivity }}</p>
+                </div>
+                <div class="udetail">
+                  <p id="name">{{ userdetails?.userDetail }}</p>
+                </div>
+              </div>
+              <div v-if="userDetails?.length < -1" class="no-detail-body">
+                <div>No RECORDS FOUND</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- footer -->
+      <div class="table-footer">
+        <div><p>Rows per page: 10</p></div>
+        <p id="pages">1-10 of 278</p>
+        <div></div>
+      </div>
     </div>
   </main>
 </template>
@@ -99,34 +187,54 @@
 import FilterButton from './reusables/FilterButton.vue'
 import SearchBar from './reusables/SearchBar.vue'
 import PayButton from './reusables/PayButton.vue'
+import { useDataStore } from '@/stores/data'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+const tabViews = ref([
+  { type: 'All', state: false },
+  { type: 'Paid', state: false },
+  { type: 'Unpaid', state: false },
+  { type: 'Overdue', state: false },
+])
+const dataStore = useDataStore()
+const { getUserDetails, filterUserData } = dataStore
+const { filteredUserData, userDetails } = storeToRefs(dataStore)
+const showTable = ref(false)
 
-const tabViews = ['All', 'Paid', 'Unpaid', 'Overdue']
-const userData = [
-  {
-    uId: 1,
-    name: 'Justin Septimus',
-    email: 'example@email.com',
-    userStatus: 'Active',
-    lastLogin: '14/APR/2020',
-    paymetStatus: 'Paid',
-    payDate: '15/APR/2020',
-    amount: 200,
-    currency: 'USD',
-  },
-]
+const toogleShowTable = () => {
+  showTable.value = !showTable.value
+}
+const filterUser = data => {
+  tabViews.value.forEach(el => {
+    if (el.type == data?.type) {
+      el.state = true
+    } else {
+      el.state = false
+    }
+  })
+  filterUserData(data?.type)
+}
 </script>
 <style lang="scss">
 .dashboard {
   padding: 20px;
   display: grid;
-  gap: 10px;
 
+  @media screen and (max-width: 584px) {
+    padding: 5px;
+  }
+  @media screen and (max-width: 611px) {
+    text-align: center;
+  }
   .header {
-    width: 100%;
     font-size: 14px;
+    max-width: 100vw;
 
     h4 {
       color: #6e6893;
+      @media screen and (max-width: 611px) {
+        font-size: 12px;
+      }
     }
     // Buttons and Total Paybable amount
     .header-tab {
@@ -135,18 +243,29 @@ const userData = [
       border-width: 1px;
       color: #6e6893;
       justify-content: space-between;
+      // Buttons and Total Paybable amount responsiveness
+      @media screen and (max-width: 584px) {
+        width: 100%;
+        max-width: 100vw;
+      }
 
       // Buttons
       .tab-buttons {
         display: flex;
         flex-direction: row;
         gap: 20px;
+        @media screen and (max-width: 611px) {
+          justify-content: center;
+        }
 
         .t-button {
           font-weight: 500;
           cursor: pointer;
           text-align: center;
           padding: 0px 10px 0px 10px;
+          @media screen and (max-width: 611px) {
+            font-size: 12px;
+          }
           @media screen and (max-width: 611px) {
             padding: 0px;
           }
@@ -156,10 +275,7 @@ const userData = [
           border-bottom: solid #25213b;
           border-width: 1px;
         }
-        // Buttons responsiveness
-        @media screen and (max-width: 611px) {
-          width: auto;
-        }
+
         @media screen and (max-width: 545px) {
           gap: 8px;
         }
@@ -167,10 +283,15 @@ const userData = [
           justify-content: space-evenly;
         }
       }
+
       // Total Paybable amount Info
       .tab-info {
         display: flex;
         justify-content: end;
+
+        @media screen and (max-width: 584px) {
+          justify-content: center;
+        }
 
         span {
           font-size: 18px;
@@ -199,20 +320,32 @@ const userData = [
       @media screen and (max-width: 611px) {
         justify-content: space-between;
       }
-      @media screen and (max-width: 555px) {
+      @media screen and (max-width: 584px) {
         flex-direction: column;
       }
     }
   }
-  //Data Table Filter
-  .data-table-filter {
+  //Data div Filter
+  .data-div-filter {
     display: flex;
     padding: 20px;
     background-color: #ffffff;
-    gap: 25px;
+
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
-    .button {
+    margin-top: 10px;
+
+    // Data div Filter responsiveness
+    @media screen and (max-width: 584px) {
+      width: 100%;
+      max-width: 85vw;
+      gap: 10px;
+    }
+
+    .filterbutton {
+      width: 20%;
+    }
+    .paybutton {
       width: 100%;
       display: flex;
       justify-content: end;
@@ -223,61 +356,106 @@ const userData = [
     }
   }
 
-  //  Data Table Css
-  .data-table {
-    background: #f4f2ff;
-    border-collapse: collapse;
-    border: none;
+  //  Data div Css
+  .table-container {
+    @media screen and (max-width: 584px) {
+      margin: 0px;
+      overflow: auto;
+      max-width: 90vw;
+    }
 
-    .data-table-body {
-      // Table Headear CSS
-      .table-header {
-        th {
-          text-align: start;
-          padding-left: 20px;
-          color: #6e6893;
-          @media screen and (max-width: 1130px) {
-            font-size: 12px;
-          }
-          input {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-          }
-        }
-        #amt {
-          text-align: end;
-        }
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      color: #6e6893;
+      border: solid 1px #d9d5ec;
 
-        #v-more {
-          text-align: end;
-          padding-right: 15px;
+      @media screen and (max-width: 918px) {
+        font-size: 12px;
+      }
+      div {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        max-width: auto;
+        padding-left: 14px;
+      }
+      #cbox {
+        max-width: 109px;
+        margin-top: 10px;
+        @media screen and (max-width: 611px) {
+          padding-left: 0px;
         }
       }
+      #cbox input {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+      #ustatus {
+        padding-left: 10px;
+      }
 
-      // Table Body CSS
-      .table-body {
-        background-color: #ffffff;
-        height: 60px;
-
-        td {
-          width: 18.5%;
-          height: 60px;
-          line-height: 10px;
-          padding: 8px 0px 0px 20px;
-          @media screen and (max-width: 1130px) {
-            line-height: 18px;
-          }
+      #v-more {
+        width: 10%;
+        display: flex;
+        justify-content: end;
+        padding-right: 15px;
+        margin-top: 10px;
+        img {
+          width: 25px;
+          height: 25px;
         }
-        .cbox {
-          width: 8%;
-          input {
-            width: 20px;
-            height: 20px;
+      }
+    }
+    .body-container {
+      .table-body {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        background-color: #ffffff;
+        line-height: 5px;
+        padding-top: 10px;
+
+        border: solid 1px #d9d5ec;
+        @media screen and (max-width: 735px) {
+          line-height: 15px;
+        }
+
+        div {
+          width: 100%;
+        }
+        .checkbox {
+          max-width: 100px;
+          margin-top: 10px;
+          display: flex;
+          justify-content: center;
+          padding-left: 14px;
+          @media screen and (max-width: 611px) {
+            padding-left: 0px;
+          }
+          #cbox {
+            input {
+              width: 20px;
+              height: 20px;
+              cursor: pointer;
+            }
+          }
+          #icon {
+            margin-top: 5px;
             cursor: pointer;
+            img {
+              width: 15px;
+              height: 15px;
+            }
           }
         }
         .uName {
+          padding-left: 25px;
+
+          @media screen and (max-width: 1130px) {
+            padding-left: 0px;
+          }
           #name {
             color: #25213b;
           }
@@ -290,12 +468,16 @@ const userData = [
           }
         }
         .ustatus {
+          padding-left: 55px;
+          @media screen and (max-width: 1130px) {
+            padding-left: 0px;
+          }
           .status {
             display: flex;
             gap: 4px;
-            max-width: 58px;
+
             height: 19px;
-            text-align: center;
+            text-align: start;
             border-radius: 10px;
             background-color: #e6e6f2;
             padding: 2px 5px 2px 5px;
@@ -305,7 +487,6 @@ const userData = [
             }
 
             .dot {
-              background-color: #4a4aff;
               border-radius: 50%;
               width: 8px;
               height: 8px;
@@ -314,10 +495,12 @@ const userData = [
             p {
               margin: 0px;
               font-weight: 500;
-              padding-top: 5px;
-              color: #4a4aff;
+              padding-top: 8px;
+
               @media screen and (max-width: 1130px) {
-                font-size: 13px;
+                font-size: 12px;
+              }
+              @media screen and (max-width: 735px) {
                 padding-top: 2px;
               }
             }
@@ -331,14 +514,18 @@ const userData = [
         }
 
         .pstatus {
+          padding-left: 85px;
+          @media screen and (max-width: 1130px) {
+            padding-left: 0px;
+          }
           .status {
             display: flex;
             gap: 4px;
             max-width: 50px;
             height: 19px;
-            text-align: center;
+            text-align: start;
             border-radius: 10px;
-            background-color: #cdffcd;
+
             padding: 2px 5px 2px 5px;
             @media screen and (max-width: 1130px) {
               padding: 2px 2px 2px 5px;
@@ -350,22 +537,24 @@ const userData = [
             }
             p {
               font-weight: 500;
-              padding-top: 5px;
-              color: #007f00;
+              padding-top: 8px;
+
               margin: 0px;
               @media screen and (max-width: 1130px) {
-                font-size: 13px;
+                font-size: 12px;
+              }
+              @media screen and (max-width: 735px) {
                 padding-top: 2px;
               }
             }
           }
           .dot {
-            background-color: #007f00;
             border-radius: 50%;
             width: 8px;
             height: 8px;
             align-self: center;
           }
+
           #pdate {
             color: #6e6893;
             @media screen and (max-width: 1130px) {
@@ -375,52 +564,136 @@ const userData = [
         }
 
         .amount {
-          width: 20%;
-          text-align: end;
-          padding-left: 50px;
+          text-align: center;
+          max-width: auto;
+          #cur {
+            color: #6e6893;
+          }
           @media screen and (max-width: 570px) {
             text-align: center;
           }
           @media screen and (max-width: 1130px) {
-            line-height: 8px;
+            line-height: 10px;
             padding: 0px;
             font-size: 13px;
           }
         }
 
         .v-more-data {
-          width: 100%;
-          max-width: 500px;
           display: flex;
           justify-content: center;
           align-items: center;
-          padding-top: 8px;
+          max-width: 200px;
+
           @media screen and (max-width: 1130px) {
             font-size: 13px;
-            line-height: 13px;
+            line-height: 14px;
           }
           #vm {
-            width: 80%;
             display: flex;
             justify-content: end;
             cursor: pointer;
             p {
               margin: 0px;
-
               color: #6e6893;
             }
           }
           #icon {
-            width: 20%;
             display: flex;
             justify-content: end;
-            padding-right: 35px;
+            padding-right: 18px;
+            @media screen and (max-width: 1130px) {
+              width: auto;
+            }
+
             img {
               cursor: pointer;
             }
           }
         }
       }
+      .detail-table-container {
+        .detail-table-header {
+          width: 100%;
+          display: flex;
+          background-color: #f2f0f9;
+          color: #6e6893;
+
+          div {
+            width: 100%;
+            max-width: 180px;
+          }
+
+          .udate {
+            color: #6e6893;
+          }
+          #uactivity {
+            width: 50%;
+            max-width: 300px;
+          }
+
+          #udetail {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            img {
+              width: 15px;
+              height: 15px;
+            }
+          }
+        }
+        .detail-table-body {
+          display: flex;
+          flex-direction: column;
+          background-color: #f4f2ff;
+          border: solid 1px #d9d5ec;
+          .detail-body {
+            display: flex;
+            width: 100%;
+            div {
+              width: 100%;
+              max-width: 165px;
+            }
+            .udate {
+              color: #6e6893;
+            }
+            .uactivity {
+              max-width: 300px;
+            }
+            .id {
+              max-width: 100px;
+            }
+            .udetail {
+              max-width: 525px;
+            }
+          }
+          .no-detail-body {
+            display: flex;
+            justify-content: center;
+            height: 100px;
+            background: #f4f2ff;
+            align-items: center;
+            color: #6e6893;
+          }
+        }
+      }
+    }
+  }
+  // Table footer Css
+  .table-footer {
+    width: 100%;
+    height: 45px;
+    background-color: #f4f2ff;
+    display: flex;
+    justify-content: end;
+    gap: 50px;
+    color: #6e6893;
+    border-top: 0px;
+    border: solid 1px #d9d5ec;
+    #pages {
+      font-size: 12px;
+      font-weight: 600;
+      padding-top: 6px;
     }
   }
 }
