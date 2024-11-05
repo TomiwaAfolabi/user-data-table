@@ -225,7 +225,7 @@ export const useDataStore = defineStore('dataStore', () => {
   const userDetails = ref([])
   const filteredUserData = ref([...userData.value])
 
-  function getUserDetails(udata) {
+  function getDetails(udata) {
     userData?.value.map(el => {
       if (el.uId == udata?.uId) {
         el.userDetails.forEach(
@@ -235,23 +235,28 @@ export const useDataStore = defineStore('dataStore', () => {
     })
   }
   function filterUserData(udata) {
-    return userData?.value.map(el => {
+    let data = []
+    return userData?.value.filter(el => {
       if (udata == el.paymetStatus) {
-        var ndata = [el]
-
-        filteredUserData.value = [...ndata]
-        console.log(filteredUserData.value)
-      } else {
+        data.push(el)
+        filteredUserData.value = [...data.flat()]
+      }
+      if (udata == 'All') {
         filteredUserData.value = [...userData.value]
       }
     })
   }
+  function searchUserData(udata) {
+    const searchdata = userData?.value.filter(el => el.name.includes(udata))
+    filteredUserData.value = [...searchdata]
+  }
 
   return {
     userData,
-    getUserDetails,
+    getDetails,
     userDetails,
     filterUserData,
     filteredUserData,
+    searchUserData,
   }
 })

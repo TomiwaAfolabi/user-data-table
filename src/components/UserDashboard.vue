@@ -65,7 +65,8 @@
                 id="icon"
                 @click="
                   toogleShowTable(),
-                    getUserDetails({ uId: user?.uId, state: showTable })
+                    getDetails,
+                    { uId: user?.uId, state: showTable }
                 "
               >
                 <img
@@ -197,8 +198,8 @@ const tabViews = ref([
   { type: 'Overdue', state: false },
 ])
 const dataStore = useDataStore()
-const { getUserDetails, filterUserData } = dataStore
-const { filteredUserData, userDetails } = storeToRefs(dataStore)
+const { getDetails, filterUserData } = dataStore
+const { userDetails, filteredUserData } = storeToRefs(dataStore)
 const showTable = ref(false)
 
 const toogleShowTable = () => {

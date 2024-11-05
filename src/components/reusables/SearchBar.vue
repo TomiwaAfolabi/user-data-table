@@ -1,11 +1,22 @@
 <template>
   <div class="search-bar">
-    <input type="text" placeholder="Search Users by Name, Email or Date" />
+    <input
+      type="text"
+      placeholder="Search Users by Name, Email or Date"
+      @input="data => searchUserData(data?.target?.value)"
+    />
     <div class="icon">
       <img src="../../assets/icons/search-icon.png" alt="filter-icon" />
     </div>
   </div>
 </template>
+<script setup>
+import { useDataStore } from '@/stores/data'
+
+const dataStore = useDataStore()
+const { searchUserData } = dataStore
+</script>
+
 <style lang="scss">
 .search-bar {
   position: relative;
