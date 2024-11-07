@@ -16,6 +16,7 @@ defineProps(['extraClass', 'buttonTitle'])
     border-radius: 6px;
     color: white;
     border: none;
+    cursor: pointer;
     @media screen and (max-width: 650px) {
       max-width: 100px;
       font-size: 12px;

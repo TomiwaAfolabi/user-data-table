@@ -9,15 +9,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Justin Septimus',
       email: 'justinseptimus@email.com',
       userStatus: 'Active',
-      lastLogin: '14/APR/2020',
+      lastLogin: '14-06-2006',
       paymetStatus: 'Paid',
-      payDate: '15/APR/2020',
+      payDate: '11-10-2006',
       amount: 200,
       currency: 'USD',
       userDetails: [
         {
           id: 1,
-          date: '13/APR/2020',
+          date: '13-04-2020',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -25,7 +25,7 @@ export const useDataStore = defineStore('dataStore', () => {
         },
         {
           id: 2,
-          date: '18/APR/2020',
+          date: '18-04-2020',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -33,7 +33,7 @@ export const useDataStore = defineStore('dataStore', () => {
         },
         {
           id: 3,
-          date: '12/APR/2020',
+          date: '02-02-2022',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -46,15 +46,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Micheal Balogun',
       email: 'michealbalogun@email.com',
       userStatus: 'Active',
-      lastLogin: '14/APR/2020',
+      lastLogin: '01-01-2019',
       paymetStatus: 'Overdue',
-      payDate: '15/APR/2020',
+      payDate: '05-05-2019',
       amount: 200,
       currency: 'USD',
       userDetails: [
         {
           id: 2,
-          date: '30/JUN/2022',
+          date: '30-10-2022',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -67,15 +67,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'David Greene',
       email: 'davaidgreen@email.com',
       userStatus: 'Active',
-      lastLogin: '14/APR/2020',
+      lastLogin: '20-11-2009',
       paymetStatus: 'Overdue',
-      payDate: '15/APR/2020',
+      payDate: '15-04-2020',
       amount: 600,
       currency: 'USD',
       userDetails: [
         {
           id: 3,
-          date: '12/APR/2020',
+          date: '18-06-2016',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -88,15 +88,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Sarah Bellick',
       email: 'sarahbellick@email.com',
       userStatus: 'Active',
-      lastLogin: '14/APR/2020',
+      lastLogin: '05-07-2023',
       paymetStatus: 'Paid',
-      payDate: '15/APR/2020',
+      payDate: '06-10-2016',
       amount: 900,
       currency: 'USD',
       userDetails: [
         {
           id: 4,
-          date: '12/APR/2020',
+          date: '09-09-2008',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -109,15 +109,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Thomas Sankara',
       email: 'thomassan@email.com',
       userStatus: 'Inactive',
-      lastLogin: '14/APR/2020',
+      lastLogin: '20-10-2016',
       paymetStatus: 'Unpaid',
-      payDate: '15/APR/2020',
+      payDate: '05-09-2010',
       amount: 200,
       currency: 'USD',
       userDetails: [
         {
           id: 5,
-          date: '12/APR/2020',
+          date: '05-07-2009',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -130,15 +130,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Olamitoro Matthews',
       email: 'olamatthews@email.com',
       userStatus: 'Active',
-      lastLogin: '14/APR/2020',
+      lastLogin: '11-02-2015',
       paymetStatus: 'Unpaid',
-      payDate: '15/APR/2020',
+      payDate: '4-12-2014',
       amount: 500,
       currency: 'USD',
       userDetails: [
         {
           id: 6,
-          date: '12/APR/2020',
+          date: '20-10-2020',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -151,15 +151,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Dapo Johsua',
       email: 'dapjosh@email.com',
       userStatus: 'Inactive',
-      lastLogin: '14/APR/2020',
+      lastLogin: '11-11-2016',
       paymetStatus: 'Overdue',
-      payDate: '15/APR/2020',
+      payDate: '22-02-2008',
       amount: 800,
       currency: 'USD',
       userDetails: [
         {
           id: 7,
-          date: '12/APR/2020',
+          date: '16-03-2018',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -172,9 +172,9 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Helene Bello',
       email: 'helenb@email.com',
       userStatus: 'Active',
-      lastLogin: '14/APR/2020',
+      lastLogin: '10-04-2018',
       paymetStatus: 'Unpaid',
-      payDate: '15/APR/2020',
+      payDate: '12-06-2011',
       amount: 200,
       currency: 'USD',
       userDetails: [],
@@ -184,15 +184,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Samantha snow',
       email: 'ssgirl@email.com',
       userStatus: 'Inactive',
-      lastLogin: '14/APR/2020',
+      lastLogin: '10-12-2003',
       paymetStatus: 'Overdue',
-      payDate: '15/APR/2020',
+      payDate: '28-05-2005',
       amount: 200,
       currency: 'USD',
       userDetails: [
         {
           id: 9,
-          date: '12/APR/2020',
+          date: '11-11-2006',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -205,15 +205,15 @@ export const useDataStore = defineStore('dataStore', () => {
       name: 'Emmanuel Bright',
       email: 'brightemma@email.com',
       userStatus: 'Active',
-      lastLogin: '14/APR/2020',
+      lastLogin: '25-04-2023',
       paymetStatus: 'Paid',
-      payDate: '15/APR/2020',
+      payDate: '16-03-2012',
       amount: 200,
       currency: 'USD',
       userDetails: [
         {
           id: 10,
-          date: '12/APR/2020',
+          date: '13-06-2006',
           userActivity:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies.',
           userDetail:
@@ -227,10 +227,13 @@ export const useDataStore = defineStore('dataStore', () => {
 
   function getDetails(udata) {
     userData?.value.map(el => {
+      if ((udata?.state == false) & (el.status == true)) {
+        el.status = udata?.state
+        userDetails.value = []
+      }
       if (el.uId == udata?.uId) {
-        el.userDetails.forEach(
-          el => (userDetails.value = [{ ...el, status: udata?.state }]),
-        )
+        el.status = udata?.state
+        userDetails.value = [...el.userDetails]
       }
     })
   }
@@ -247,8 +250,56 @@ export const useDataStore = defineStore('dataStore', () => {
     })
   }
   function searchUserData(udata) {
-    const searchdata = userData?.value.filter(el => el.name.includes(udata))
+    const searchdata = userData?.value.filter(el =>
+      el.name.toLowerCase().includes(udata.toLowerCase()),
+    )
     filteredUserData.value = [...searchdata]
+  }
+  const sortUserData = data => {
+    if (data == 'default')
+      filteredUserData.value.sort(() => {
+        return 0
+      })
+    if (data == 'firstname')
+      filteredUserData.value.sort((a, b) => {
+        if (a?.name < b?.name) {
+          return -1
+        }
+        if (a?.name > b?.name) {
+          return 1
+        }
+        return 0
+      })
+    if (data == 'lastname')
+      filteredUserData.value.sort((a, b) => {
+        if (a?.name > b?.name) {
+          return -1
+        }
+        if (a?.name > b?.name) {
+          return 1
+        }
+        return 0
+      })
+    if (data == 'duedate')
+      filteredUserData.value.sort((a, b) => {
+        const initial = new Date(a?.payDate).getTime()
+        const final = new Date(b?.payDate).getTime()
+        return initial - final
+      })
+
+    if (data == 'lastlogin')
+      filteredUserData.value.sort((a, b) => {
+        const initial = new Date(a?.lastLogin).getTime()
+        const final = new Date(b?.lastLogin).getTime()
+        return initial - final
+      })
+  }
+  const payUserDues = data => {
+    userData.value.forEach(el => {
+      if (el.uId == data) {
+        el.paymetStatus = 'Paid'
+      }
+    })
   }
 
   return {
@@ -258,5 +309,7 @@ export const useDataStore = defineStore('dataStore', () => {
     filterUserData,
     filteredUserData,
     searchUserData,
+    sortUserData,
+    payUserDues,
   }
 })

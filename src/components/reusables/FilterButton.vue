@@ -8,93 +8,30 @@
     </div>
     <div v-if="showFilter" class="filter-dropdown">
       <p>SORT BY:</p>
-      <div class="dropdown">
-        <p>Default</p>
+      <div class="dropdown" v-for="item in filterOptions" :key="item?.id">
+        <p>{{ item?.label }}</p>
         <input
           type="radio"
-          id="default"
+          :id="item?.id"
           v-model="sortType"
-          value="default"
-          name="default"
-          @click="$emit('sortedtype', sortType)"
+          :value="item?.value"
+          :name="item?.name"
+          :checked="item?.checked"
+          @input="e => $emit('sortedtype', (sortType = e.target.value))"
         />
       </div>
-      <div class="dropdown">
-        <p>First Name</p>
-        <input
-          type="radio"
-          id="firstname"
-          v-model="sortType"
-          name="firstname"
-          value="firstname"
-          @click="$emit('sortedtype', sortType)"
-        />
-      </div>
-      <div class="dropdown">
-        <p>Last Name</p>
-        <input
-          type="radio"
-          id="lastname"
-          v-model="sortType"
-          name="lastname"
-          value="lastname"
-          @click="$emit('sortedtype', sortType)"
-        />
-      </div>
-      <div class="dropdown">
-        <p>Due Date</p>
-        <input
-          type="radio"
-          id="duedate"
-          v-model="sortType"
-          name="duedate"
-          value="duedate"
-          @click="$emit('sortedtype', sortType)"
-        />
-      </div>
-      <div class="dropdown">
-        <p>Last Login</p>
-        <input
-          type="radio"
-          id="lastlogin"
-          v-model="sortType"
-          name="lastlogin"
-          value="lastlogin"
-          @click="$emit('sortedtype', sortType)"
-        />
-      </div>
+
       <p>USERS:</p>
-      <div class="dropdown">
-        <p>All</p>
+      <div class="dropdown" v-for="item in otherfilterOptions" :key="item?.id">
+        <p>{{ item?.label }}</p>
         <input
           type="radio"
-          id="all"
+          :id="item?.id"
           v-model="sortType"
-          name="all"
-          value="all"
-          @click="$emit('sortedtype', sortType)"
-        />
-      </div>
-      <div class="dropdown">
-        <p>Active</p>
-        <input
-          type="radio"
-          id="active"
-          v-model="sortType"
-          name="Active"
-          value="Active"
-          @click="$emit('sortedtype', sortType)"
-        />
-      </div>
-      <div class="dropdown">
-        <p>Inactive</p>
-        <input
-          type="radio"
-          id="inactive"
-          v-model="sortType"
-          name="Inactive"
-          value="Inactive"
-          @click="$emit('sortedtype', sortType)"
+          :value="item?.value"
+          :name="item?.name"
+          :checked="item?.checked"
+          @input="e => $emit('sortedtype', (sortType = e.target.value))"
         />
       </div>
     </div>
@@ -102,8 +39,63 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-const sortType = ref('default')
+const sortType = ref('')
 const showFilter = ref(false)
+const filterOptions = [
+  {
+    id: 'default',
+    name: 'default',
+    label: 'Default',
+    checked: false,
+    value: 'default',
+  },
+  {
+    id: 'firstname',
+    name: 'firstname',
+    label: 'First Name',
+    checked: false,
+    value: 'firstname',
+  },
+  {
+    id: 'lastname',
+    name: 'lastname',
+    label: 'Last Name',
+    checked: false,
+    value: 'lastname',
+  },
+  {
+    id: 'duedate',
+    name: 'duedate',
+    label: 'Due Date',
+    checked: false,
+    value: 'duedate',
+  },
+  {
+    id: 'lastlogin',
+    name: 'lastlogin',
+    label: 'Last Login',
+    checked: false,
+    value: 'lastlogin',
+  },
+]
+const otherfilterOptions = [
+  { id: 'all', name: 'all', label: 'All', checked: false, value: 'all' },
+  {
+    id: 'active',
+    name: 'active',
+    label: 'Active',
+    checked: false,
+    value: 'active',
+  },
+  {
+    id: 'inactive',
+    name: 'inactive',
+    label: 'Inactive',
+    checked: false,
+    value: 'inactive',
+  },
+]
+
 function toggleFilter() {
   showFilter.value = !showFilter.value
 }

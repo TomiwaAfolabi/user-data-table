@@ -26,14 +26,15 @@
 
       <div class="data-div-filter">
         <div class="filterbutton">
-          <FilterButton @sortedtype="data => sortUser(data)" />
+          <FilterButton @sortedtype="data => sortUserData(data)" />
         </div>
 
         <SearchBar />
         <div class="paybutton">
           <PayButton
             button-title="PAY DUES"
-            exdiva-class=" margin-top: 5px; display:flex; justify-content:end"
+            extra-class=" margin-top: 5px; display:flex; justify-content:end "
+            @click="payDues()"
           />
         </div>
       </div>
@@ -59,18 +60,37 @@
           <div class="table-body">
             <div class="checkbox">
               <div id="cbox">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  :id="user.uId"
+                  :value="user.uId"
+                  :name="user.name"
+                  @click="e => (payDuesId = e.target.value)"
+                />
               </div>
               <div
+                v-if="!showTable"
                 id="icon"
                 @click="
                   toogleShowTable(),
-                    getDetails,
-                    { uId: user?.uId, state: showTable }
+                    getDetails({ uId: user?.uId, state: showTable })
                 "
               >
                 <img
                   src="../assets/icons/arrow-down-icon.png"
+                  alt="drop down icon"
+                />
+              </div>
+              <div
+                v-else
+                id="icon"
+                @click="
+                  toogleShowTable(),
+                    getDetails({ uId: user?.uId, state: showTable })
+                "
+              >
+                <img
+                  src="../assets/icons/arrow-up-icon.png"
                   alt="drop down icon"
                 />
               </div>
@@ -137,7 +157,7 @@
             </div>
           </div>
           <!-- User Detail Table -->
-          <div class="detail-table-container" v-if="showTable">
+          <div class="detail-table-container" v-if="user?.status">
             <div class="detail-table-header">
               <div class="c-box"></div>
               <div id="udate"><p>DATE</p></div>
@@ -152,11 +172,7 @@
               :key="userdetails?.id"
               class="detail-table-body"
             >
-              <div
-                class="detail-body"
-                :key="userdetails?.id"
-                :style="`${!userdetails?.state ? 'show' : 'hidden'}`"
-              >
+              <div class="detail-body" :key="userdetails?.id">
                 <div></div>
                 <div class="udate">
                   <p id="name">{{ userdetails?.date }}</p>
@@ -168,9 +184,9 @@
                   <p id="name">{{ userdetails?.userDetail }}</p>
                 </div>
               </div>
-              <div v-if="userDetails?.length < -1" class="no-detail-body">
-                <div>No RECORDS FOUND</div>
-              </div>
+            </div>
+            <div v-show="!userDetails.length" class="no-detail-body">
+              <div>NO RECORDS FOUND</div>
             </div>
           </div>
         </div>
@@ -179,6 +195,7 @@
       <div class="table-footer">
         <div><p>Rows per page: 10</p></div>
         <p id="pages">1-10 of 278</p>
+
         <div></div>
       </div>
     </div>
@@ -198,13 +215,16 @@ const tabViews = ref([
   { type: 'Overdue', state: false },
 ])
 const dataStore = useDataStore()
-const { getDetails, filterUserData } = dataStore
-const { userDetails, filteredUserData } = storeToRefs(dataStore)
+const { getDetails, filterUserData, sortUserData, payUserDues } = dataStore
+const { filteredUserData, userDetails } = storeToRefs(dataStore)
 const showTable = ref(false)
+const payDuesId = ref('')
 
 const toogleShowTable = () => {
+  getDetails()
   showTable.value = !showTable.value
 }
+
 const filterUser = data => {
   tabViews.value.forEach(el => {
     if (el.type == data?.type) {
@@ -214,6 +234,11 @@ const filterUser = data => {
     }
   })
   filterUserData(data?.type)
+}
+const payDues = () => {
+  if (payDuesId.value) {
+    payUserDues(payDuesId.value)
+  }
 }
 </script>
 <style lang="scss">
@@ -331,7 +356,7 @@ const filterUser = data => {
     display: flex;
     padding: 20px;
     background-color: #ffffff;
-
+    gap: 25px;
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
     margin-top: 10px;
@@ -339,8 +364,7 @@ const filterUser = data => {
     // Data div Filter responsiveness
     @media screen and (max-width: 584px) {
       width: 100%;
-      max-width: 85vw;
-      gap: 10px;
+      max-width: 90vw;
     }
 
     .filterbutton {
@@ -350,6 +374,7 @@ const filterUser = data => {
       width: 100%;
       display: flex;
       justify-content: end;
+
       @media screen and (max-width: 650px) {
         width: auto;
         justify-content: start;
@@ -362,7 +387,6 @@ const filterUser = data => {
     @media screen and (max-width: 584px) {
       margin: 0px;
       overflow: auto;
-      max-width: 90vw;
     }
 
     .table-header {
@@ -370,9 +394,10 @@ const filterUser = data => {
       justify-content: space-between;
       color: #6e6893;
       border: solid 1px #d9d5ec;
+      overflow: auto;
 
       @media screen and (max-width: 918px) {
-        font-size: 12px;
+        font-size: 8px;
       }
       div {
         width: 100%;
@@ -385,6 +410,7 @@ const filterUser = data => {
         max-width: 109px;
         margin-top: 10px;
         @media screen and (max-width: 611px) {
+          max-width: 80px;
           padding-left: 0px;
         }
       }
@@ -417,6 +443,7 @@ const filterUser = data => {
         background-color: #ffffff;
         line-height: 5px;
         padding-top: 10px;
+        overflow: auto;
 
         border: solid 1px #d9d5ec;
         @media screen and (max-width: 735px) {
@@ -432,8 +459,8 @@ const filterUser = data => {
           display: flex;
           justify-content: center;
           padding-left: 14px;
-          @media screen and (max-width: 611px) {
-            padding-left: 0px;
+          @media screen and (max-width: 750px) {
+            padding-left: 5px;
           }
           #cbox {
             input {
@@ -443,12 +470,8 @@ const filterUser = data => {
             }
           }
           #icon {
-            margin-top: 5px;
+            margin-top: 7px;
             cursor: pointer;
-            img {
-              width: 15px;
-              height: 15px;
-            }
           }
         }
         .uName {
@@ -465,18 +488,18 @@ const filterUser = data => {
           }
           @media screen and (max-width: 1130px) {
             line-height: 8px;
-            font-size: 13px;
+            font-size: 8px;
           }
         }
         .ustatus {
           padding-left: 55px;
           @media screen and (max-width: 1130px) {
             padding-left: 0px;
+            font-size: 8px;
           }
           .status {
             display: flex;
             gap: 4px;
-
             height: 19px;
             text-align: start;
             border-radius: 10px;
@@ -499,7 +522,7 @@ const filterUser = data => {
               padding-top: 8px;
 
               @media screen and (max-width: 1130px) {
-                font-size: 12px;
+                font-size: 8px;
               }
               @media screen and (max-width: 735px) {
                 padding-top: 2px;
@@ -509,7 +532,7 @@ const filterUser = data => {
           #llogin {
             color: #6e6893;
             @media screen and (max-width: 1130px) {
-              font-size: 11px;
+              font-size: 8px;
             }
           }
         }
@@ -518,6 +541,7 @@ const filterUser = data => {
           padding-left: 85px;
           @media screen and (max-width: 1130px) {
             padding-left: 0px;
+            font-size: 8px;
           }
           .status {
             display: flex;
@@ -539,10 +563,9 @@ const filterUser = data => {
             p {
               font-weight: 500;
               padding-top: 8px;
-
               margin: 0px;
               @media screen and (max-width: 1130px) {
-                font-size: 12px;
+                font-size: 8px;
               }
               @media screen and (max-width: 735px) {
                 padding-top: 2px;
@@ -559,7 +582,7 @@ const filterUser = data => {
           #pdate {
             color: #6e6893;
             @media screen and (max-width: 1130px) {
-              font-size: 11px;
+              font-size: 8px;
             }
           }
         }
@@ -668,14 +691,14 @@ const filterUser = data => {
               max-width: 525px;
             }
           }
-          .no-detail-body {
-            display: flex;
-            justify-content: center;
-            height: 100px;
-            background: #f4f2ff;
-            align-items: center;
-            color: #6e6893;
-          }
+        }
+        .no-detail-body {
+          display: flex;
+          justify-content: center;
+          height: 100px;
+          background: #f4f2ff;
+          align-items: center;
+          color: #6e6893;
         }
       }
     }
